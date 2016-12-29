@@ -1,9 +1,9 @@
 {
-  "name": "electron-wrapper",
-  "productName": "Electron wrapper",
-  "identifier": "org.smm.electron-wrapper",
-  "description": "Electron wrapper that loads a URL from a separate config file.",
-  "version": "0.0.4",
+  "name": "sports-run-wrapper",
+  "productName": "Run wrapper",
+  "identifier": "org.smm.run-electron-wrapper",
+  "description": "Electron wrapper for the Sports Run experience.",
+  "version": "0.0.1",
   "author": "Science Museum of Minnesota",
   "main": "background.js",
   "dependencies": {
