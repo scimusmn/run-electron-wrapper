@@ -24,13 +24,20 @@ import env from './env';
 import os from 'os';
 
 let mainWindow;
+let scoreboard;
 app.on('ready', function () {
 
   mainWindow = new BrowserWindow({
     x: 0,
     y: 0,
-    width: 800,
-    height: 600,
+    width: 1080,
+    height: 1920,
+  });
+  scoreboard = new BrowserWindow({
+    x: 1080,
+    y: 0,
+    width: 1920,
+    height: 1080,
   });
 
   /**
@@ -44,6 +51,7 @@ app.on('ready', function () {
   if (env.name == 'production') {
     setTimeout(function () {
       mainWindow.setKiosk(true);
+      scoreboard.setKiosk(true);
     }, 100);
   }
 
@@ -53,6 +61,7 @@ app.on('ready', function () {
   if (env.name !== 'production') {
     devHelper.setDevMenu();
     mainWindow.openDevTools();
+    scoreboard.openDevTools();
   }
 
   /**
@@ -107,19 +116,22 @@ function loadWindowUptimeDelay(configFileObj) {
   const nominalUptime = 300;
 
   // Seconds to wait if we are not in the nominal uptime window
-  const launchDelay = 60;
+  const launchDelay = configFileObj.launchDelay;
 
   console.log('os.uptime(): ', os.uptime());
   console.log('nominalUptime: ', nominalUptime);
 
   if (os.uptime() > nominalUptime) {
     console.log('Launching immediately');
-    mainWindow.loadURL(configFileObj.url);
+    mainWindow.loadURL(configFileObj.mainWindowUrl);
+    scoreboard.loadURL(configFileObj.scoreboardUrl);
   } else {
     console.log('Delaying launch ' + launchDelay + ' seconds');
     mainWindow.loadURL('file://' + __dirname + '/launch-delay.html');
+    scoreboard.loadURL('file://' + __dirname + '/launch-delay.html');
     setTimeout(function () {
-      mainWindow.loadURL(configFileObj.url);
+      mainWindow.loadURL(configFileObj.mainWindowUrl);
+      scoreboard.loadURL(configFileObj.scoreboardUrl);
     }, launchDelay * 1000);
   }
 
